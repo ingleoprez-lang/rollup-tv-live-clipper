@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rollup TV Live Clipper</title>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0b0b0b;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #141414;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+      text-align: center;
+      width: 320px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      font-size: 22px;
+      padding: 18px;
+      background: #e50914;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    input {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Rollup TV Live Clipper</h1>
+
+    <button onclick="markClip()">🔴 MARK CLIP</button>
+
+    <input id="note" placeholder="Optional note" />
+
+  </div>
+
+  <script>
+    function markClip() {
+      const note = document.getElementById("note").value;
+
+      fetch("https://script.google.com/macros/s/AKfycbwNgiRG94Oe7rKUkyB33KLbsQ4P8OoE3kQpU4lciAk52qc9kvX3tH9c0RvNOPYDfRJ5/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({ nota: note })
+      });
+
+      document.getElementById("note").value = "";
+    }
+  </script>
+
+</body>
+</html>
