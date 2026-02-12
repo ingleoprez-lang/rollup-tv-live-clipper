@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rollup TV Live Clipper</title>
+  <title>RollupTV – Rumor Mill</title>
 
   <style>
     body {
@@ -21,38 +21,57 @@
       background: #141414;
       padding: 32px;
       border-radius: 16px;
+      width: 360px;
       box-shadow: 0 0 30px rgba(0,0,0,0.6);
-      text-align: center;
-      width: 320px;
     }
 
     h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    button {
-      width: 100%;
+      margin: 0 0 20px;
+      text-align: center;
       font-size: 22px;
-      padding: 18px;
-      background: #e50914;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
     }
 
-    button:active {
-      transform: scale(0.98);
-    }
-
-    input {
+    textarea {
       width: 100%;
-      margin-top: 16px;
+      height: 120px;
       padding: 12px;
       font-size: 15px;
       border-radius: 8px;
       border: none;
+      resize: none;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      background: #e50914;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      text-align: center;
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -60,28 +79,55 @@
 <body>
 
   <div class="container">
+    <h1>RollupTV – Rumor Mill</h1>
 
-    <h1>Rollup TV Live Clipper</h1>
+    <textarea id="rumor" placeholder="Drop your rumor here…"></textarea>
 
-    <button onclick="markClip()">🔴 MARK CLIP</button>
+    <label>
+      <input type="checkbox" id="notBot" />
+      I am not a bot
+    </label>
 
-    <input id="note" placeholder="Optional note" />
+    <button id="submitBtn" onclick="submitRumor()" disabled>
+      Submit
+    </button>
 
+    <div class="status" id="status"></div>
   </div>
 
   <script>
-    function markClip() {
-      const note = document.getElementById("note").value;
+    const checkbox = document.getElementById("notBot");
+    const button = document.getElementById("submitBtn");
 
-      fetch("https://script.google.com/macros/s/AKfycbwNgiRG94Oe7rKUkyB33KLbsQ4P8OoE3kQpU4lciAk52qc9kvX3tH9c0RvNOPYDfRJ5/exec", {
+    checkbox.addEventListener("change", () => {
+      button.disabled = !checkbox.checked;
+    });
+
+    function submitRumor() {
+      const rumor = document.getElementById("rumor").value.trim();
+      const status = document.getElementById("status");
+
+      if (!rumor) {
+        status.textContent = "Please write something first.";
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbzI03eDtKG_c_OGKRuTgvDLt3a5zBPMQ9zPt_z9gNW32lFG56RorgJQ5Vi_1CWLF_TU/exec", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: new URLSearchParams({ nota: note })
+        body: `rumor=${encodeURIComponent(rumor)}`
+      })
+      .then(() => {
+        status.textContent = "Rumor submitted anonymously.";
+        document.getElementById("rumor").value = "";
+        checkbox.checked = false;
+        button.disabled = true;
+      })
+      .catch(() => {
+        status.textContent = "Something went wrong. Try again.";
       });
-
-      document.getElementById("note").value = "";
     }
   </script>
 
