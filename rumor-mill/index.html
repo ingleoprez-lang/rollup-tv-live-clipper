@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Rollup – Rumor Mill</title>
 
   <style>
     body {
       background: #0b0b0b;
-      color: white;
-      font-family: system-ui, sans-serif;
+      color: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -17,15 +17,116 @@
       margin: 0;
     }
 
+    .container {
+      width: 360px;
+      background: #141414;
+      padding: 32px;
+      border-radius: 14px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
     h1 {
-      font-size: 32px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 22px;
       letter-spacing: 1px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      border: none;
+      padding: 12px;
+      font-size: 15px;
+      resize: none;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      background: #e50914;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      text-align: center;
+      opacity: 0.85;
     }
   </style>
 </head>
+
 <body>
+  <div class="container">
+    <h1>THE ROLLUP – RUMOR MILL</h1>
 
-  <h1>THE ROLLUP – RUMOR MILL</h1>
+    <textarea id="rumor" placeholder="Drop your rumor here…"></textarea>
 
+    <label>
+      <input type="checkbox" id="notBot" />
+      I am not a bot
+    </label>
+
+    <button id="submitBtn" disabled>Submit</button>
+
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    const checkbox = document.getElementById("notBot");
+    const button = document.getElementById("submitBtn");
+    const status = document.getElementById("status");
+
+    checkbox.addEventListener("change", () => {
+      button.disabled = !checkbox.checked;
+    });
+
+    button.addEventListener("click", () => {
+      const rumor = document.getElementById("rumor").value.trim();
+
+      if (!rumor) {
+        status.textContent = "Please write something first.";
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbwLOCo8EvTa8xoV9EeZ17Dlgrt1h8nKgYvXOlOvbrWIAzBFaPHrhBSE9rGDepLhWmV0/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `rumor=${encodeURIComponent(rumor)}`
+      })
+      .then(() => {
+        status.textContent = "Rumor submitted anonymously.";
+        document.getElementById("rumor").value = "";
+        checkbox.checked = false;
+        button.disabled = true;
+      })
+      .catch(() => {
+        status.textContent = "Something went wrong. Try again.";
+      });
+    });
+  </script>
 </body>
 </html>
