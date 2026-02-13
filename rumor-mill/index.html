@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Rollup – Rumor Mill</title>
 
   <style>
     body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0b0b0b;
-      color: #ffffff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #eaeaea;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -18,37 +18,56 @@
     }
 
     .container {
-      width: 360px;
-      background: #141414;
-      padding: 32px;
-      border-radius: 14px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+      max-width: 420px;
+      width: 100%;
+      padding: 40px;
+      background: #111;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
     }
 
-    h1 {
+    .brand {
       text-align: center;
-      margin-bottom: 20px;
-      font-size: 22px;
+      margin-bottom: 24px;
+    }
+
+    .brand h1 {
+      font-size: 26px;
+      margin: 0;
       letter-spacing: 1px;
+    }
+
+    .brand p {
+      font-size: 14px;
+      color: #aaa;
+      margin-top: 8px;
+      line-height: 1.4;
     }
 
     textarea {
       width: 100%;
-      height: 120px;
-      border-radius: 8px;
-      border: none;
-      padding: 12px;
+      height: 140px;
+      padding: 14px;
       font-size: 15px;
+      border-radius: 10px;
+      border: 1px solid #222;
+      background: #0b0b0b;
+      color: #fff;
       resize: none;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    textarea::placeholder {
+      color: #666;
     }
 
     label {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 14px;
-      margin-bottom: 16px;
+      color: #bbb;
+      margin-bottom: 20px;
       cursor: pointer;
     }
 
@@ -59,51 +78,72 @@
       background: #e50914;
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
+      transition: opacity 0.2s ease;
     }
 
     button:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
     }
 
     .status {
-      margin-top: 12px;
+      margin-top: 16px;
       font-size: 14px;
       text-align: center;
-      opacity: 0.85;
+      color: #aaa;
+    }
+
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12px;
+      color: #555;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>THE ROLLUP – RUMOR MILL</h1>
 
-    <textarea id="rumor" placeholder="Drop your rumor here…"></textarea>
+  <div class="container">
+    <div class="brand">
+      <h1>The Rollup</h1>
+      <p>
+        Anonymous rumors submitted by the community.<br/>
+        Nothing here is verified.
+      </p>
+    </div>
+
+    <textarea id="rumor" placeholder="Drop a rumor you heard…"></textarea>
 
     <label>
       <input type="checkbox" id="notBot" />
-      I am not a bot
+      I confirm this submission is anonymous
     </label>
 
-    <button id="submitBtn" disabled>Submit</button>
+    <button id="submitBtn" onclick="submitRumor()" disabled>
+      Submit anonymously
+    </button>
 
     <div class="status" id="status"></div>
+
+    <div class="footer">
+      This form does not collect personal data.
+    </div>
   </div>
 
   <script>
     const checkbox = document.getElementById("notBot");
     const button = document.getElementById("submitBtn");
-    const status = document.getElementById("status");
 
     checkbox.addEventListener("change", () => {
       button.disabled = !checkbox.checked;
     });
 
-    button.addEventListener("click", () => {
+    function submitRumor() {
       const rumor = document.getElementById("rumor").value.trim();
+      const status = document.getElementById("status");
 
       if (!rumor) {
         status.textContent = "Please write something first.";
@@ -118,7 +158,7 @@
         body: `rumor=${encodeURIComponent(rumor)}`
       })
       .then(() => {
-        status.textContent = "Rumor submitted anonymously.";
+        status.textContent = "Rumor received. Thank you.";
         document.getElementById("rumor").value = "";
         checkbox.checked = false;
         button.disabled = true;
@@ -126,7 +166,8 @@
       .catch(() => {
         status.textContent = "Something went wrong. Try again.";
       });
-    });
+    }
   </script>
+
 </body>
 </html>
