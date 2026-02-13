@@ -13,55 +13,86 @@ body {
   color: #eaeaea;
 }
 
-/* HEADER */
-header {
-  padding: 20px 40px;
-  border-bottom: 1px solid #1c1c1c;
-}
-
-.logo {
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-nav {
-  margin-top: 12px;
+.layout {
   display: flex;
-  gap: 20px;
+  min-height: 100vh;
+}
+
+/* LEFT NAV */
+.left-nav {
+  width: 200px;
+  padding: 40px 20px;
+  border-right: 1px solid #1c1c1c;
+}
+
+.left-nav h2 {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.left-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.left-nav li {
+  margin-bottom: 18px;
+  font-size: 15px;
+  color: #aaa;
+}
+
+/* RIGHT NAV */
+.right-nav {
+  width: 200px;
+  padding: 40px 20px;
+  border-left: 1px solid #1c1c1c;
+}
+
+.right-nav h3 {
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.right-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.right-nav li {
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: #888;
+}
+
+/* CENTER CONTENT */
+.main {
+  flex: 1;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 40px;
   font-size: 14px;
   color: #aaa;
 }
 
-nav span {
-  cursor: default;
-}
-
-/* HERO */
-.hero {
-  padding: 60px 20px 40px 20px;
-  text-align: center;
+.top-bar span {
+  cursor: pointer;
 }
 
 .hero h1 {
-  font-size: 42px;
-  margin: 0;
-}
-
-.hero p {
-  margin-top: 16px;
-  color: #aaa;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
-}
-
-/* FORM SECTION */
-.form-section {
-  display: flex;
-  justify-content: center;
-  padding: 40px 20px 80px 20px;
+  font-size: 44px;
+  margin-bottom: 30px;
 }
 
 .form-container {
@@ -84,6 +115,10 @@ textarea {
   color: white;
   resize: none;
   margin-bottom: 20px;
+}
+
+textarea::placeholder {
+  color: #666;
 }
 
 label {
@@ -117,62 +152,69 @@ button:disabled {
   font-size: 14px;
   color: #aaa;
 }
-
-/* FOOTER */
-footer {
-  border-top: 1px solid #1c1c1c;
-  padding: 30px;
-  text-align: center;
-  font-size: 13px;
-  color: #666;
-}
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">The Rollup</div>
-  <nav>
-    <span>Home</span>
-    <span>Episodes</span>
-    <span>Clips</span>
-    <span>Rumor Mill</span>
-    <span>About</span>
-  </nav>
-</header>
+<div class="layout">
 
-<section class="hero">
-  <h1>Rumor Mill</h1>
-  <p>
-    Anonymous rumors submitted by the community.
-    Nothing here is verified. Submissions are reviewed
-    before being discussed on air.
-  </p>
-</section>
+  <!-- LEFT NAV -->
+  <div class="left-nav">
+    <h2>The Rollup</h2>
+    <ul>
+      <li>Home</li>
+      <li>Episodes</li>
+      <li>Clips</li>
+      <li><strong>Rumor Mill</strong></li>
+      <li>About</li>
+    </ul>
+  </div>
 
-<section class="form-section">
-  <div class="form-container">
+  <!-- MAIN CONTENT -->
+  <div class="main">
 
-    <textarea id="rumor" placeholder="Drop a rumor you heard..."></textarea>
+    <div class="top-bar">
+      <span>Login / Sign In</span>
+    </div>
 
-    <label>
-      <input type="checkbox" id="notBot" />
-      I understand this submission is anonymous
-    </label>
+    <div class="hero">
+      <h1>Rumor Mill</h1>
+    </div>
 
-    <button id="submitBtn" onclick="submitRumor()" disabled>
-      Submit Anonymously
-    </button>
+    <div class="form-container">
 
-    <div class="status" id="status"></div>
+      <textarea id="rumor" placeholder="Drop your rumor here..."></textarea>
+
+      <label>
+        <input type="checkbox" id="notBot" />
+        I'm not a bot
+      </label>
+
+      <button id="submitBtn" onclick="submitRumor()" disabled>
+        Submit Anonymously
+      </button>
+
+      <div class="status" id="status"></div>
+
+    </div>
 
   </div>
-</section>
 
-<footer>
-  © 2026 The Rollup. All rumors are community-submitted and unverified.
-</footer>
+  <!-- RIGHT NAV -->
+  <div class="right-nav">
+    <h3>CATEGORIES</h3>
+    <ul>
+      <li>Payments</li>
+      <li>Neobanks</li>
+      <li>AI</li>
+      <li>Stablecoins</li>
+      <li>Tokenization</li>
+      <li>RWAs</li>
+    </ul>
+  </div>
+
+</div>
 
 <script>
 const checkbox = document.getElementById("notBot");
@@ -199,7 +241,7 @@ function submitRumor() {
     body: `rumor=${encodeURIComponent(rumor)}`
   })
   .then(() => {
-    status.textContent = "Rumor received. Thank you.";
+    status.textContent = "Rumor received.";
     document.getElementById("rumor").value = "";
     checkbox.checked = false;
     button.disabled = true;
