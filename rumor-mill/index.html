@@ -8,137 +8,78 @@
 <style>
 body {
   margin: 0;
-  font-family: Inter, system-ui, sans-serif;
   background: #0b0b0b;
   color: #eaeaea;
-}
-
-.layout {
+  font-family: Georgia, serif;
   display: flex;
-  min-height: 100vh;
+  justify-content: center;
+  padding: 60px 20px;
 }
 
-/* LEFT NAV */
-.left-nav {
-  width: 200px;
-  padding: 40px 20px;
-  border-right: 1px solid #1c1c1c;
+.container {
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
 }
 
-.left-nav h2 {
-  font-size: 22px;
-  margin-bottom: 30px;
-}
-
-.left-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.left-nav li {
-  margin-bottom: 18px;
-  font-size: 15px;
+.banner {
+  font-size: 14px;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
   color: #aaa;
 }
 
-/* RIGHT NAV */
-.right-nav {
-  width: 200px;
-  padding: 40px 20px;
-  border-left: 1px solid #1c1c1c;
-}
-
-.right-nav h3 {
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: #777;
-  margin-bottom: 20px;
-}
-
-.right-nav ul {
-  list-style: none;
-  padding: 0;
+.headline {
+  font-size: 48px;
+  font-weight: bold;
   margin: 0;
+  letter-spacing: 2px;
 }
 
-.right-nav li {
-  margin-bottom: 14px;
-  font-size: 14px;
-  color: #888;
-}
-
-/* CENTER CONTENT */
-.main {
-  flex: 1;
-  padding: 60px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.top-bar {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
+.subheadline {
+  margin-top: 10px;
   margin-bottom: 40px;
-  font-size: 14px;
-  color: #aaa;
+  font-size: 18px;
+  color: #bbb;
 }
 
-.top-bar span {
-  cursor: pointer;
-}
-
-.hero h1 {
-  font-size: 44px;
-  margin-bottom: 30px;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 500px;
-  background: #111;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+.divider {
+  height: 1px;
+  background: #222;
+  margin: 40px 0;
 }
 
 textarea {
   width: 100%;
-  height: 160px;
+  height: 180px;
   padding: 16px;
-  font-size: 15px;
-  border-radius: 12px;
-  border: 1px solid #222;
-  background: #0b0b0b;
+  font-size: 16px;
+  border-radius: 0;
+  border: 1px solid #333;
+  background: #111;
   color: white;
   resize: none;
   margin-bottom: 20px;
-}
-
-textarea::placeholder {
-  color: #666;
+  font-family: Georgia, serif;
 }
 
 label {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
-  color: #bbb;
+  font-size: 15px;
   margin-bottom: 20px;
 }
 
 button {
-  width: 100%;
-  padding: 16px;
+  padding: 14px 28px;
   font-size: 16px;
   background: #e50914;
   color: white;
   border: none;
-  border-radius: 14px;
   cursor: pointer;
+  letter-spacing: 1px;
 }
 
 button:disabled {
@@ -147,8 +88,7 @@ button:disabled {
 }
 
 .status {
-  margin-top: 18px;
-  text-align: center;
+  margin-top: 20px;
   font-size: 14px;
   color: #aaa;
 }
@@ -157,62 +97,26 @@ button:disabled {
 
 <body>
 
-<div class="layout">
+<div class="container">
 
-  <!-- LEFT NAV -->
-  <div class="left-nav">
-    <h2>The Rollup</h2>
-    <ul>
-      <li>Home</li>
-      <li>Episodes</li>
-      <li>Clips</li>
-      <li><strong>Rumor Mill</strong></li>
-      <li>About</li>
-    </ul>
-  </div>
+  <div class="banner">EXTRA EXTRA!</div>
+  <h1 class="headline">READ ALL ABOUT IT</h1>
+  <div class="subheadline">The Rollup – Rumor Mill</div>
 
-  <!-- MAIN CONTENT -->
-  <div class="main">
+  <div class="divider"></div>
 
-    <div class="top-bar">
-      <span>Login / Sign In</span>
-    </div>
+  <textarea id="rumor" placeholder="Drop your rumor here..."></textarea>
 
-    <div class="hero">
-      <h1>Rumor Mill</h1>
-    </div>
+  <label>
+    <input type="checkbox" id="notBot" />
+    I'm not a bot
+  </label>
 
-    <div class="form-container">
+  <button id="submitBtn" onclick="submitRumor()" disabled>
+    SUBMIT RUMOR
+  </button>
 
-      <textarea id="rumor" placeholder="Drop your rumor here..."></textarea>
-
-      <label>
-        <input type="checkbox" id="notBot" />
-        I'm not a bot
-      </label>
-
-      <button id="submitBtn" onclick="submitRumor()" disabled>
-        Submit Anonymously
-      </button>
-
-      <div class="status" id="status"></div>
-
-    </div>
-
-  </div>
-
-  <!-- RIGHT NAV -->
-  <div class="right-nav">
-    <h3>CATEGORIES</h3>
-    <ul>
-      <li>Payments</li>
-      <li>Neobanks</li>
-      <li>AI</li>
-      <li>Stablecoins</li>
-      <li>Tokenization</li>
-      <li>RWAs</li>
-    </ul>
-  </div>
+  <div class="status" id="status"></div>
 
 </div>
 
